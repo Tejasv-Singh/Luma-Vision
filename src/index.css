@@ -1,0 +1,137 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+   Design tokens. The palette is dark-only by intent (a sports-analytics
+   control room), but `--app-brightness` / `--app-contrast` let the user tune
+   panel luminance from the display menu without swapping the whole theme.
+--------------------------------------------------------------------------- */
+:root {
+  --navy-950: #0a0e27;
+  --navy-900: #0f1229;
+  --navy-800: #141a3a;
+  --navy-700: #1b2350;
+  --gold-500: #ffc107;
+  --gold-700: #ff9800;
+  --hairline: rgba(255, 255, 255, 0.07);
+  --hairline-strong: rgba(255, 193, 7, 0.28);
+
+  --app-brightness: 1;
+  --app-contrast: 1;
+
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--navy-950);
+  color: theme('colors.ink.200');
+  font-family: theme('fontFamily.sans');
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* The brightness control scopes to the app shell so overlays/portals inherit
+   it too, while the page background stays a fixed anchor colour. */
+#root {
+  filter: brightness(var(--app-brightness)) contrast(var(--app-contrast));
+}
+
+/* Ambient court-light wash behind the whole app. */
+.app-backdrop {
+  background:
+    radial-gradient(1200px 620px at 12% -8%, rgba(255, 152, 0, 0.09), transparent 60%),
+    radial-gradient(1000px 520px at 92% 4%, rgba(47, 59, 125, 0.4), transparent 62%),
+    linear-gradient(180deg, var(--navy-950) 0%, var(--navy-900) 45%, var(--navy-950) 100%);
+}
+
+@layer components {
+  .panel {
+    @apply rounded-2xl border border-white/[0.07] bg-navy-900/70 shadow-panel backdrop-blur-sm;
+  }
+
+  .panel-hover {
+    @apply transition-all duration-200 hover:border-gold-500/30 hover:bg-navy-800/70;
+  }
+
+  .stat-label {
+    @apply text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-400;
+  }
+
+  /* Hero/stat figures use the UI sans with proportional figures; tabular
+     digits are reserved for columns that must align (tables, axis ticks). */
+  .stat-value {
+    @apply font-sans text-3xl font-semibold tracking-tight text-ink-100;
+  }
+
+  .tabular {
+    @apply font-mono tabular-nums;
+  }
+
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm
+           font-semibold transition-all duration-150 focus-visible:outline-none
+           focus-visible:ring-2 focus-visible:ring-gold-500/70 focus-visible:ring-offset-2
+           focus-visible:ring-offset-navy-950 disabled:cursor-not-allowed disabled:opacity-45;
+  }
+
+  .btn-primary {
+    @apply btn bg-gold-grad text-navy-950 shadow-glow hover:brightness-110 active:brightness-95;
+  }
+
+  .btn-ghost {
+    @apply btn border border-white/10 bg-white/[0.03] text-ink-200 hover:border-gold-500/40 hover:text-ink-100;
+  }
+
+  .btn-danger {
+    @apply btn border border-negative/40 bg-negative/10 text-negative hover:bg-negative/20;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04]
+           px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-ink-300;
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-white/10 bg-navy-950/60 px-3 py-2 text-sm text-ink-100
+           placeholder:text-ink-500 focus:border-gold-500/50 focus:outline-none
+           focus:ring-2 focus:ring-gold-500/20;
+  }
+}
+
+/* Scrollbars tuned to the dark shell. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 193, 7, 0.28) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 193, 7, 0.22);
+  border-radius: 99px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 193, 7, 0.4);
+  background-clip: content-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
