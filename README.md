@@ -6,6 +6,9 @@ mapping, TrackNetV3 shuttle tracking and pose estimation — as a single reviewa
 
 The UI ships with a complete mock backend, so it runs standalone with zero services.
 
+> **Using the app rather than building it?** See the [User Guide](./USER_GUIDE.md) — how to upload a
+> match, read each analysis tab, review video, export reports and compare matches.
+
 ---
 
 ## Quick start
